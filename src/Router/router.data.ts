@@ -6,8 +6,8 @@ import { IRouter } from "../types/router";
 
 
 export const routerData: IRouter[] = [
-    { component: Home, path: "/", isAuth: true },
-    { component: Login, path: "/login", isAuth: false },
-    { component: Profile, path:"/profile", isAuth:true },
-    { component: Users, path: "/admin/users", isAuth: true },
+    { component: Home, path: "/", isPublish: true },
+    { component: Login, path: "/login", isPublish: true },
+    { component: Profile, path:"/profile", isPublish:false },
+    { component: Users, path: "/admin/users", isPublish: false },
   ];
