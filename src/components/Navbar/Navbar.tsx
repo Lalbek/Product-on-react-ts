@@ -13,28 +13,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-
-interface NavItem {
-  title: string;
-  url: string;
-}
-
-interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window?: () => Window;
-}
+import { INavbarProps } from "../../types/navbar";
+import { navItems } from "./navbar.data";
 
 const drawerWidth = 240;
-const navItems: NavItem[] = [
-  { title: "Home", url: "/" },
-  { title: "Admin", url: "/admin" },
-  { title: "Login", url: "/login" },
-];
 
-export default function Navbar(props: Props) {
+export function Navbar(props: INavbarProps) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -54,7 +38,7 @@ export default function Navbar(props: Props) {
             <ListItemButton
               sx={{ textAlign: "center" }}
               component="a"
-              href={item.url}
+              href={item.path}
             >
               <ListItemText primary={item.title} />
             </ListItemButton>
@@ -94,7 +78,7 @@ export default function Navbar(props: Props) {
                 key={item.title}
                 sx={{ color: "#fff" }}
                 component="a"
-                href={item.url}
+                href={item.path}
               >
                 {item.title}
               </Button>
@@ -109,7 +93,7 @@ export default function Navbar(props: Props) {
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
+            keepMounted: true,
           }}
           sx={{
             display: { xs: "block", sm: "none" },
