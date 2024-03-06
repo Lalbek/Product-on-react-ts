@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -15,12 +15,32 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { INavbarProps } from "../../types/navbar";
 import { navItems } from "./navbar.data";
+import { useTokenStore } from "../../stores/token";
+import { Link } from "react-router-dom";
 
 const drawerWidth = 240;
 
 export function Navbar(props: INavbarProps) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const { token, setToken, logOut } = useTokenStore();
+
+  useEffect(() => {
+    const tokenFromLocaleStorage = localStorage.getItem("TOKEN");
+    if (tokenFromLocaleStorage) {
+      setToken(tokenFromLocaleStorage);
+    }
+  }, []);
+
+  const newNavItems = navItems.filter((item) => {
+    if (!token && !item.isLogged) {
+      return true;
+    } else if (token && item.path !== "/login") {
+      return true;
+    } else {
+      return false;
+    }
+  });
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -29,18 +49,16 @@ export function Navbar(props: INavbarProps) {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: "center" }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        Login
+        FC Madrid
       </Typography>
       <Divider />
       <List>
-        {navItems.map((item) => (
+        {newNavItems.map((item) => (
           <ListItem key={item.title} disablePadding>
-            <ListItemButton
-              sx={{ textAlign: "center" }}
-              component="a"
-              href={item.path}
-            >
-              <ListItemText primary={item.title} />
+            <ListItemButton sx={{ textAlign: "center" }}>
+              <Link to={item.path}>
+                <ListItemText primary={item.title} />
+              </Link>
             </ListItemButton>
           </ListItem>
         ))}
@@ -69,18 +87,14 @@ export function Navbar(props: INavbarProps) {
             variant="h6"
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            onClick={logOut}
           >
-            Login
+            FC Madrid
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {navItems.map((item) => (
-              <Button
-                key={item.title}
-                sx={{ color: "#fff" }}
-                component="a"
-                href={item.path}
-              >
-                {item.title}
+            {newNavItems.map((item) => (
+              <Button key={item.title} sx={{ color: "#fff" }}>
+                <Link to={item.path}> {item.title}</Link>
               </Button>
             ))}
           </Box>
