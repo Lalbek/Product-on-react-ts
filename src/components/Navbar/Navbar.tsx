@@ -62,6 +62,11 @@ export function Navbar(props: INavbarProps) {
             </ListItemButton>
           </ListItem>
         ))}
+        {token && (
+          <Button sx={{ color: "#fff" }} onClick={logOut}>
+            Log Out
+          </Button>
+        )}
       </List>
     </Box>
   );
@@ -87,7 +92,6 @@ export function Navbar(props: INavbarProps) {
             variant="h6"
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
-            onClick={logOut}
           >
             FC Madrid
           </Typography>
@@ -97,6 +101,11 @@ export function Navbar(props: INavbarProps) {
                 <Link to={item.path}> {item.title}</Link>
               </Button>
             ))}
+            {token && (
+              <Button sx={{ color: "#fff" }} onClick={logOut}>
+                Log Out
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
